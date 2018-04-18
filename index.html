@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>
+        Reading function signatures
+    </title>
+    <meta charset="utf-8">
+    <style>
+    @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+        @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+        @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+        body { font-family: 'Droid Serif'; }
+        h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+        }
+        .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+        </style>
+        </head>
+        <body>
+            <textarea id="source">
+class: center, middle
+
+# Reading function signatures
+
+---
+
+class: center, middle
+
+# Terms et cetera
+
+---
+
+# A "pure function"
+
+- is a relation between a set of possible inputs and a set of possible outputs
+
+- returns the same output each type it's called with the same input
+
+- has no side effects
+
+---
+
+# Function signature shorthand
+
+Function that takes one argument of type `a` and returns a value of type `b`:
+
+*`a -> b`*
+
+```typescript
+function mapNumberToString(n: number): string
+```
+
+Function that takes two arguments of type `a` and returns a value of type `b`:
+
+*`a -> a -> b`*
+
+```typescript
+function makeStringFromTwoNumbers(x: number, y: number): string
+```
+
+(or, for a curried version)
+
+```typescript
+function makeStringFromTwoNumbers(x: number): ((number): string)
+```
+
+---
+
+# Cardinality
+
+The "cardinality" of a data type is the number of possible values it defines --
+or the number of possible values that "inhabit" the data type.
+
+Knowing the cardinality of different data types also allows you to determine
+how many different implementations are possible for a function with a given
+type signature.
+
+---
+class: center, middle
+
+# Sum types and product types
+
+---
+
+# Sum types are additive
+
+A sum type's cardinality is the sum of the cardinalities of its inhabitants.
+
+*`2 inhabitants`*
+
+```typescript
+enum NewBool { T, F };
+```
+
+*`4 inhabitants`*
+
+```typescript
+enum IntTwo { Zero, One, Two, Three };
+```
+
+*`4294967296 inhabitants`*
+
+32 bit integers -- which are sort of sum types with 4294967296 values
+
+---
+
+# Product types are multiplicative
+
+ A product type's cardinality is the product of the cardinalities of its
+inhabitants.
+
+*`4 × 2 == 8 inhabitants`*
+
+```typescript
+interface IntBool {
+    first: IntTwo,
+    second: NewBool,
+};
+```
+
+*`4 × 4 × 4 == 64 inhabitants`*
+
+```typescript
+interface TripleIntTwo {
+    first: IntTwo,
+    second: IntTwo,
+    third: IntTwo,
+};
+```
+---
+
+class: center, middle
+
+# Functions
+
+---
+
+# Calculating function implementations
+
+We can calculate the number of possible implementations of a function by
+doing some arithmetic on the cardinalities of its types.
+
+Formula for a function `a -> b` is `b ^ a`, where the latter represent the
+cardinalities of those types.
+
+*`2 ^ 4 == 16 possible implementations`*
+```typescript
+function intTwoHasSomeQuality(n: IntTwo): NewBool
+```
+
+*`4 ^ 4 == 64 possible implementations`*
+```typescript
+function mapIntTwoToADifferentIntTwo(n: IntTwo): IntTwo
+```
+
+*`64 ^ 4 == 16777216 possible implementations`*
+```typescript
+function transformIntTwoToTripleIntTwo(n: IntTwo): TripleIntTwo
+```
+
+---
+
+# Functions with multiple arguments
+
+Formula for calculating the possible implementations of a function with multiple
+arguments, `a -> b -> c` is:
+
+`(c ^ b) ^ a)`
+
+OR
+
+`c ^ (b × a)`
+
+...
+
+*`2 ^ (2 × 4) == 256 possible implementations`*
+
+```typescript
+function checkIntTwo(flag: NewBool, n: IntTo): NewBool
+```
+
+*`2 ^ (4 × 4) == 65536 possible implementations`*
+```typescript
+function intTwosAreHarmonious(x: IntTwo, y: IntTwo): NewBool
+```
+
+---
+
+# Functions over product types
+
+Product types can quickly spike the number of possible function implementations.
+
+*`8 ^ (8 × 64) == ? possible implementations`*
+
+```typescript
+function doSomeStuff(t: TripleIntTwo, ib: IntBool): IntBool
+```
+
+---
+
+# Functions over product types
+
+241031242692103258858011660602831411291209324794568895135967
+503906525739159180320066908502410734604966344876628088800478
+786241697879495832496961298789077465145521333938162522477078
+207791768149967684554313738782005759734585790459910946138712
+209950796499781564134230067762947335528161742841179416396778
+587037036896910922159194305423201156275845008057958785090099
+371489228347664663118151506380487337518226050624699283789870
+5971012525843324401232986857004760339316736
+
+...possible implementations
+
+```typescript
+function doSomeStuff(t: TripleIntTwo, ib: IntBool): IntBool
+```
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      var slideshow = remark.create();
+    </script>
+  </body>
+</html>
