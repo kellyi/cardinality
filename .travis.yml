@@ -1,0 +1,7 @@
+script:
+  - echo "No build step"
+
+deploy:
+  provider: surge
+  project: .
+  domain: https://cardinality.surge.sh
