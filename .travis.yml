@@ -1,7 +1,8 @@
 script:
-  - echo "No build step"
+  - git rev-parse HEAD > version.txt
 
 deploy:
+  skip_cleanup: true
   provider: surge
   project: .
-  domain: https://cardinality.surge.sh
+  domain: https://readingfunctionsignatures.surge.sh
