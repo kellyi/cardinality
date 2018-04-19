@@ -42,7 +42,7 @@ class: center, middle
 
 Function that takes one argument of type `a` and returns a value of type `b`:
 
-*`a -> b`*
+.center[*`a -> b`*]
 
 ```typescript
 function mapNumberToString(n: number): string
@@ -50,7 +50,7 @@ function mapNumberToString(n: number): string
 
 Function that takes two arguments of type `a` and returns a value of type `b`:
 
-*`a -> a -> b`*
+.center[*`a -> a -> b`*]
 
 ```typescript
 function makeStringFromTwoNumbers(x: number, y: number): string
@@ -62,12 +62,12 @@ function makeStringFromTwoNumbers(x: number, y: number): string
 
 Haskell functions can be partially applied by default, which means that
 
-*`a -> a -> b`*
+.center[*`a -> a -> b`*]
 
 is a function that takes one argument of type `a` and returns a function of
 type:
 
-*`a -> b`*
+.center[*`a -> b`*]
 
 In JavaScript or TypeScript we have to write it explicitly:
 
@@ -185,19 +185,18 @@ function transformIntTwoToTripleIntTwo(n: IntTwo): TripleIntTwo
 Formula for calculating the possible implementations of a function with multiple
 arguments, `a -> b -> c` is:
 
-`(c ^ b) ^ a)`
+.center[`(c ^ b) ^ a)`]
 
-OR
+.center[OR]
 
-`c ^ (b × a)`
+.center[`c ^ (b × a)`]
 
-...
 
 ```typescript
-function checkIntTwo(flag: NewBool, n: IntTo): NewBool
+function checkIntTwo(n: IntTwo, rigorously: NewBool): NewBool
 ```
 
-.center[*`2 ^ (2 × 4) == 256 possible implementations`*]
+.center[*`2 ^ (4 × 2) == 256 possible implementations`*]
 
 ```typescript
 function intTwosAreHarmonious(x: IntTwo, y: IntTwo): NewBool
