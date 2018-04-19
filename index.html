@@ -32,7 +32,7 @@ class: center, middle
 
 - is a relation between a set of possible inputs and a set of possible outputs
 
-- returns the same output each type it's called with the same input
+- returns the same output each time it's called with the same input
 
 - has no side effects
 
@@ -56,10 +56,29 @@ Function that takes two arguments of type `a` and returns a value of type `b`:
 function makeStringFromTwoNumbers(x: number, y: number): string
 ```
 
-(or, for a curried version)
+---
+
+# Partial function application
+
+Haskell functions can be partially applied by default, which means that
+
+*`a -> a -> b`*
+
+is a function that takes one argument of type `a` and returns a function of
+type:
+
+*`a -> b`*
+
+In JavaScript or TypeScript we have to write it explicitly:
 
 ```typescript
 function makeStringFromTwoNumbers(x: number): ((number): string)
+```
+
+and call it differently:
+
+```typescript
+makeStringFromTwoNumbers(1)(2);
 ```
 
 ---
@@ -84,21 +103,21 @@ class: center, middle
 
 A sum type's cardinality is the sum of the cardinalities of its inhabitants.
 
-*`1 + 1 == 2 inhabitants`*
-
 ```typescript
 enum NewBool { F, T };
 ```
 
-*`1 + 1 + 1 + 1 == 4 inhabitants`*
+.center[*`1 + 1 == 2 inhabitants`*]
 
 ```typescript
 enum IntTwo { Zero, One, Two, Three };
 ```
 
-*`4294967296 inhabitants`*
+.center[*`1 + 1 + 1 + 1 == 4 inhabitants`*]
 
 32 bit integers -- which are sort of sum types with 4294967296 values
+
+.center[*`4294967296 inhabitants`*]
 
 ---
 
@@ -107,8 +126,6 @@ enum IntTwo { Zero, One, Two, Three };
  A product type's cardinality is the product of the cardinalities of its
 inhabitants.
 
-*`4 × 2 == 8 inhabitants`*
-
 ```typescript
 interface IntBool {
     first: IntTwo,
@@ -116,7 +133,7 @@ interface IntBool {
 };
 ```
 
-*`4 × 4 × 4 == 64 inhabitants`*
+.center[*`4 × 2 == 8 inhabitants`*]
 
 ```typescript
 interface TripleIntTwo {
@@ -125,6 +142,9 @@ interface TripleIntTwo {
     third: IntTwo,
 };
 ```
+
+.center[*`4 × 4 × 4 == 64 inhabitants`*]
+
 ---
 
 class: center, middle
@@ -141,21 +161,23 @@ doing some arithmetic on the cardinalities of its types.
 For a function `a -> b`, the formula for its number of implementations is
 `b ^ a`, where the latter represent the cardinalities of the types.
 
-*`2 ^ 4 == 16 possible implementations`*
 ```typescript
 function intTwoHasSomeQuality(n: IntTwo): NewBool
 ```
 
-*`4 ^ 4 == 64 possible implementations`*
+.center[*`2 ^ 4 == 16 possible implementations`*]
+
 ```typescript
 function mapIntTwoToADifferentIntTwo(n: IntTwo): IntTwo
 ```
 
-*`64 ^ 4 == 16777216 possible implementations`*
+.center[*`4 ^ 4 == 64 possible implementations`*]
+
 ```typescript
 function transformIntTwoToTripleIntTwo(n: IntTwo): TripleIntTwo
 ```
 
+.center[*`64 ^ 4 == 16777216 possible implementations`*]
 ---
 
 # ...with multiple arguments
@@ -171,32 +193,36 @@ OR
 
 ...
 
-*`2 ^ (2 × 4) == 256 possible implementations`*
-
 ```typescript
 function checkIntTwo(flag: NewBool, n: IntTo): NewBool
 ```
 
-*`2 ^ (4 × 4) == 65536 possible implementations`*
+.center[*`2 ^ (2 × 4) == 256 possible implementations`*]
+
 ```typescript
 function intTwosAreHarmonious(x: IntTwo, y: IntTwo): NewBool
 ```
 
+.center[*`2 ^ (4 × 4) == 65536 possible implementations`*]
 ---
 
 # Functions over product types
 
 Product types can quickly spike the number of possible function implementations.
 
-*`8 ^ (8 × 64) == ? possible implementations`*
-
 ```typescript
 function doSomeStuff(t: TripleIntTwo, ib: IntBool): IntBool
 ```
 
+.center[*`8 ^ (8 × 64) == ? possible implementations`*]
+
 ---
 
 # Functions over product types
+
+```typescript
+function doSomeStuff(t: TripleIntTwo, ib: IntBool): IntBool
+```
 
 241031242692103258858011660602831411291209324794568895135967
 503906525739159180320066908502410734604966344876628088800478
@@ -207,11 +233,17 @@ function doSomeStuff(t: TripleIntTwo, ib: IntBool): IntBool
 371489228347664663118151506380487337518226050624699283789870
 5971012525843324401232986857004760339316736
 
-...possible implementations
+.center[*...possible implementations*]
 
-```typescript
-function doSomeStuff(t: TripleIntTwo, ib: IntBool): IntBool
-```
+---
+class: center, middle
+
+# In sum
+
+.left[You can reason quickly about the potential complexity of different functions by
+thinking about the cardinality of their data types.]
+
+---
         </textarea>
         <script src="https://remarkjs.com/downloads/remark-latest.min.js">
         </script>
